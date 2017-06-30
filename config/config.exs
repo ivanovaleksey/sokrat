@@ -12,6 +12,8 @@ config :sokrat, Sokrat.Robot,
     {Hedwig.Responders.Ping, []}
   ]
 
+config :plug,
+  port: 8000
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
