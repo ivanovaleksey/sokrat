@@ -9,7 +9,8 @@ config :sokrat, Sokrat.Robot,
   token: System.get_env("SLACK_BOT_TOKEN"),
   responders: [
     {Hedwig.Responders.Help, []},
-    {Hedwig.Responders.Ping, []}
+    {Hedwig.Responders.Ping, []},
+    {Sokrat.Responders.RC, []}
   ]
 
 config :sokrat, ecto_repos: [Sokrat.Repo]
