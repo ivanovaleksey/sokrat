@@ -12,6 +12,11 @@ config :sokrat, Sokrat.Robot,
     {Hedwig.Responders.Ping, []}
   ]
 
+config :sokrat, ecto_repos: [Sokrat.Repo]
+config :sokrat, Sokrat.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  database: "sokrat"
+
 config :plug,
   port: 8000
 

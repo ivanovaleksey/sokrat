@@ -31,6 +31,8 @@ defmodule Sokrat.Mixfile do
   defp deps do
     [{:hedwig_slack, "~> 1.0"},
      {:cowboy, "~> 1.0.0"},
-     {:plug, "~> 1.0"}]
+     {:plug, "~> 1.0"},
+     {:postgrex, ">= 0.0.0"},
+     {:ecto, "~> 2.1"}]
   end
 end

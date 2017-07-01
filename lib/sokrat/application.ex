@@ -14,6 +14,7 @@ defmodule Sokrat.Application do
       # Starts a worker by calling: Sokrat.Worker.start_link(arg1, arg2, arg3)
       # worker(Sokrat.Worker, [arg1, arg2, arg3]),
       worker(Sokrat.Robot, []),
+      worker(Sokrat.Repo, []),
       Plug.Adapters.Cowboy.child_spec(:http, Sokrat.Router, [], plug_opts)
     ]
 
