@@ -33,6 +33,7 @@ defmodule Sokrat.Mixfile do
      {:cowboy, "~> 1.0.0"},
      {:plug, "~> 1.0"},
      {:postgrex, ">= 0.0.0"},
-     {:ecto, "~> 2.1"}]
+     {:ecto, "~> 2.1"},
+     {:credo, "~> 0.8", only: [:dev, :test], runtime: false}]
   end
 end
