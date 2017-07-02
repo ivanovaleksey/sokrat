@@ -12,6 +12,13 @@ config :sokrat, Sokrat.Robot,
     {Hedwig.Responders.Ping, []}
   ]
 
+config :sokrat, ecto_repos: [Sokrat.Repo]
+config :sokrat, Sokrat.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  database: "sokrat"
+
+config :plug,
+  port: 8000
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
