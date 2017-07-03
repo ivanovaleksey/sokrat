@@ -16,7 +16,7 @@ config :sokrat, Sokrat.Robot,
 config :sokrat, ecto_repos: [Sokrat.Repo]
 config :sokrat, Sokrat.Repo,
   adapter: Ecto.Adapters.Postgres,
-  database: "sokrat"
+  url: {:system, "DATABASE_URL"}
 
 config :sokrat,
   slack: %{channel: System.get_env("SLACK_BOT_CHANNEL"),
