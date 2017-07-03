@@ -1,6 +1,10 @@
 defmodule Sokrat.Decorators.Revision do
+  @moduledoc false
+
   def list(items) do
-    Enum.map(items, &single/1) |> Enum.join("\n")
+    items
+    |> Enum.map(&single/1)
+    |> Enum.join("\n")
   end
 
   def single(item) do

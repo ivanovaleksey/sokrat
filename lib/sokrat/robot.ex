@@ -1,4 +1,6 @@
 defmodule Sokrat.Robot do
+  @moduledoc false
+
   use Hedwig.Robot, otp_app: :sokrat
 
   def handle_connect(%{name: name} = state) do

@@ -1,4 +1,6 @@
 defmodule Sokrat.Revision do
+  @moduledoc false
+
   use Ecto.Schema
 
   schema "revisions" do
