@@ -23,7 +23,7 @@ config :sokrat,
            token: System.get_env("SLACK_BOT_TOKEN")}
 
 config :plug,
-  port: 8000
+  port: String.to_integer(System.get_env("PORT") || "8000")
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
