@@ -2,8 +2,10 @@ defmodule Sokrat.Revision do
   @moduledoc false
 
   use Ecto.Schema
+  import Ecto.Changeset
 
   schema "revisions" do
+    field :project, :string
     field :server, :string
     field :branch, :string
     field :revision, :string
@@ -11,10 +13,10 @@ defmodule Sokrat.Revision do
   end
 
   def changeset(struct, params \\ %{}) do
-    attributes = ~w[server branch revision]
+    attributes = ~w[project server branch revision deployed_at]
     attributes = for attr <- attributes, do: String.to_atom(attr)
     struct
-    |> Ecto.Changeset.cast(params, attributes)
-    |> Ecto.Changeset.validate_required([:deployed_at | attributes])
+    |> cast(params, attributes)
+    |> validate_required(attributes)
   end
 end
