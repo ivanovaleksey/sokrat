@@ -1,5 +1,5 @@
 defmodule Sokrat.Router do
-  alias Sokrat.{Repo, Revision}
+  alias Sokrat.{Repo, Models.Revision}
   use Plug.Router
 
   plug Plug.Logger
