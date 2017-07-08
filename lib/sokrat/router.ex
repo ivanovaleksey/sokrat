@@ -8,18 +8,16 @@ defmodule Sokrat.Router do
   plug Plug.Parsers, parsers: [:json],
                      pass: ["application/json"],
                      json_decoder: Poison
+  plug :set_resp_content_type
   plug :dispatch
 
 
   get "/applications" do
-    conn = put_resp_content_type(conn, "application/json")
-
     apps = Application |> select([a], map(a, [:id, :key, :name])) |> Repo.all
     send_resp(conn, 200, Poison.encode!(apps))
   end
 
   post "/applications" do
-    conn = put_resp_content_type(conn, "application/json")
     params = conn.body_params
 
     {status, changeset} = create_application(params)
@@ -27,7 +25,6 @@ defmodule Sokrat.Router do
   end
 
   post "/applications/:app_key/revisions" do
-    conn = put_resp_content_type(conn, "application/json")
     params = conn.body_params
 
     app = Repo.get_by!(Application, key: app_key)
@@ -57,5 +54,9 @@ defmodule Sokrat.Router do
   defp respond(conn, :error, changeset) do
     errors = for {field, {message, _}} <- changeset.errors, into: %{}, do: {field, message}
     send_resp(conn, 422, Poison.encode!(%{errors: errors}))
+  end
+
+  defp set_resp_content_type(conn, _opts) do
+    put_resp_content_type(conn, "application/json")
   end
 end
