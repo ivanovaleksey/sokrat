@@ -9,11 +9,9 @@ defmodule Sokrat.Slack do
   end
 
   defp params do
-    channel = Application.get_env(:sokrat, :slack).channel
-    token   = Application.get_env(:sokrat, :slack).token
+    token = Application.get_env(:sokrat, :slack).token
 
-    [channel: channel,
-     token: token,
+    [token: token,
      as_user: true]
   end
 end
