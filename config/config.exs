@@ -4,7 +4,7 @@ use Mix.Config
 
 config :sokrat, Sokrat.Robot,
   adapter: Hedwig.Adapters.Slack,
-  name: "sokrat",
+  name: "sokratbot",
   aka: "/",
   token: System.get_env("SLACK_BOT_TOKEN"),
   responders: [
