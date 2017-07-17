@@ -10,15 +10,16 @@ defmodule Sokrat.Responders.RC do
   @usage """
   hedwig: rc - Lists latest branches deployed on rc servers.
   """
-  respond ~r/rc$/i, _msg do
+  respond ~r/rc$/i, msg do
     Models.Application
     |> Repo.all
-    |> Enum.each(&send_revisions/1)
+    |> Enum.each(&send_revisions(&1, msg.room))
   end
 
-  defp send_revisions(app) do
+  defp send_revisions(app, room) do
     revisions = revisions_list(app)
-    Slack.chat_message(message_opts(app, revisions))
+    Keyword.merge(message_opts(app, revisions), [channel: room])
+    |> Slack.chat_message
   end
 
   defp revisions_list(app) do
