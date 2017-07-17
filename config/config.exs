@@ -18,10 +18,6 @@ config :sokrat, Sokrat.Repo,
   adapter: Ecto.Adapters.Postgres,
   database: "sokrat"
 
-config :sokrat,
-  slack: %{channel: System.get_env("SLACK_BOT_CHANNEL"),
-           token: System.get_env("SLACK_BOT_TOKEN")}
-
 config :plug,
   port: 8000
 

@@ -9,7 +9,7 @@ defmodule Sokrat.Slack do
   end
 
   defp params do
-    token = Application.get_env(:sokrat, :slack).token
+    token = Application.get_env(:sokrat, Sokrat.Robot)[:token]
 
     [token: token,
      as_user: true]
