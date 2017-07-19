@@ -5,14 +5,19 @@ defmodule Sokrat.Responders.RC do
 
   alias Sokrat.{Repo, Slack, Models}
   use Hedwig.Responder
-  import Ecto.Query, only: [join: 5, order_by: 3]
+  import Ecto.Query, only: [from: 2, join: 5, order_by: 3]
 
   @usage """
   hedwig: rc - Lists latest branches deployed on rc servers.
   """
-  respond ~r/rc$/i, msg do
-    Models.Application
-    |> Repo.all
+  respond ~r/rc(\s(?<app_key>[a-z]*))?$/i, msg do
+    query =
+      case msg.matches["app_key"] do
+        "" -> Models.Application
+        key -> from a in Models.Application, where: a.key == ^key
+      end
+
+    Repo.all(query)
     |> Enum.each(&send_revisions(&1, msg.room))
   end
 
