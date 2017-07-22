@@ -16,7 +16,9 @@ config :sokrat, Sokrat.Robot,
 config :sokrat, ecto_repos: [Sokrat.Repo]
 config :sokrat, Sokrat.Repo,
   adapter: Ecto.Adapters.Postgres,
-  database: "sokrat"
+  database: System.get_env("DB_DATABASE"),
+  username: System.get_env("DB_USERNAME"),
+  password: System.get_env("DB_PASSWORD")
 
 config :plug,
   port: 8000

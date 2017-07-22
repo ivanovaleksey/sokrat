@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+export APP_DIR=$HOME/sokratbot
+
+while read oldrev newrev refname
+do
+  branch=$( echo $refname | cut -d/ -f3 )
+  if [ "master" == "$branch" ]; then
+    export GIT_WORK_TREE=$APP_DIR
+
+    cmd="git checkout -f"
+    echo "Cloning repo"
+    echo -e "  $cmd\n"
+    $cmd
+
+    cmd=". $APP_DIR/script/run.sh"
+    echo "Running application"
+    echo -e "  $cmd\n"
+    $cmd
+  else
+    echo "Non-master branch was received. Do nothing."
+  fi
+done
