@@ -9,6 +9,11 @@ cwd=$(pwd)
 cd $APP_DIR
 pid_file=$APP_DIR/tmp/pids/bot.pid
 
+# Load environment variables
+. .env
+export SLACK_BOT_TOKEN
+export SLACK_BOT_USERNAME
+
 if [ -f $pid_file ]; then
   echo "PID file is found"
 
