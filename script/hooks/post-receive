@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+cwd=$(pwd)
 export APP_DIR=$HOME/sokratbot
 
 while read oldrev newrev refname
@@ -12,6 +13,20 @@ do
     echo "Cloning repo"
     echo -e "  $cmd\n"
     $cmd
+
+    cd $APP_DIR
+
+    cmd="mix deps.get --only prod"
+    echo "Installing dependencies"
+    echo -e "  $cmd\n"
+    $cmd
+
+    cmd="mix deps.compile"
+    echo "Compiling dependencies"
+    echo -e "  $cmd\n"
+    $cmd
+
+    cd $cwd
 
     cmd=". $APP_DIR/script/run.sh"
     echo "Running application"
