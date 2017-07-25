@@ -16,20 +16,20 @@ do
 
     cd $APP_DIR
 
-    cmd="mix deps.get --only prod"
+    cmd="MIX_ENV=prod mix deps.get --only prod"
     echo "Installing dependencies"
     echo -e "  $cmd\n"
-    $cmd
+    eval $cmd
 
-    cmd="mix deps.compile"
+    cmd="MIX_ENV=prod mix deps.compile"
     echo "Compiling dependencies"
     echo -e "  $cmd\n"
-    $cmd
+    eval $cmd
 
-    cmd="mix compile"
+    cmd="MIX_ENV=prod mix compile"
     echo "Compiling application"
     echo -e "  $cmd\n"
-    $cmd
+    eval $cmd
 
     cd $cwd
 
