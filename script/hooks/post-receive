@@ -26,6 +26,11 @@ do
     echo -e "  $cmd\n"
     $cmd
 
+    cmd="mix compile"
+    echo "Compiling application"
+    echo -e "  $cmd\n"
+    $cmd
+
     cd $cwd
 
     cmd=". $APP_DIR/script/run.sh"
