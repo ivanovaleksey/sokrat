@@ -2,7 +2,7 @@
 
 _start_sokratbot() {
   echo "Starting application"
-  elixir --detached -e "File.write! 'tmp/pids/bot.pid', :os.getpid" -S mix run --no-halt
+  MIX_ENV=prod elixir --detached -e "File.write! 'tmp/pids/bot.pid', :os.getpid" -S mix run --no-halt
 }
 
 cwd=$(pwd)
