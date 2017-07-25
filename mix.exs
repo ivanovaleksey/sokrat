@@ -35,6 +35,7 @@ defmodule Sokrat.Mixfile do
      {:postgrex, ">= 0.0.0"},
      {:ecto, "~> 2.1"},
      {:httpoison, "~> 0.12.0"},
+     {:timex, "~> 3.1"},
      {:credo, "~> 0.8", only: [:dev, :test], runtime: false}]
   end
 end

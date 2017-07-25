@@ -4,8 +4,9 @@ defmodule Sokrat.Responders.RC do
   """
 
   alias Sokrat.{Repo, Slack, Models}
-  use Hedwig.Responder
   import Ecto.Query, only: [from: 2, join: 5, order_by: 3]
+  use Hedwig.Responder
+  use Timex
 
   @usage """
   hedwig: rc - Lists latest branches deployed on rc servers.
@@ -57,9 +58,13 @@ defmodule Sokrat.Responders.RC do
   end
 
   defp revision_info(revision) do
+    deployed_at = revision.deployed_at
+    |> Timex.shift(hours: 3)
+    |> Timex.format!("%Y-%m-%d %H:%M", :strftime)
+
     %{
       "title": revision.server,
-      "value": revision.branch,
+      "value": "#{revision.branch}\n #{deployed_at}",
       "short": true
     }
   end
