@@ -31,6 +31,13 @@ do
     echo -e "  $cmd\n"
     eval $cmd
 
+    . .env
+    export SLACK_BOT_TOKEN
+    export SLACK_BOT_USERNAME
+    export DB_DATABASE
+    export DB_USERNAME
+    export DB_PASSWORD
+
     cmd="MIX_ENV=prod mix ecto.migrate"
     echo "Running migrations"
     echo -e "  $cmd\n"
