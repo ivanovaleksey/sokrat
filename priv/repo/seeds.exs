@@ -5,7 +5,7 @@ defmodule Sokrat.Seeder do
     Repo.insert_all(Models.Application, [
       [key: "rails", name: "Ruby on Rails"],
       [key: "php",   name: "PHP"],
-      [key: "front", name: "Front"]
+      [key: "js",    name: "JavaScript"]
     ])
   end
 
