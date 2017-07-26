@@ -43,12 +43,12 @@ do
     echo -e "  $cmd\n"
     eval $cmd
 
-    cd $cwd
-
     cmd=". $APP_DIR/script/run.sh"
     echo "Running application"
     echo -e "  $cmd\n"
     $cmd
+
+    cd $cwd
   else
     echo "Non-master branch was received. Do nothing."
   fi
