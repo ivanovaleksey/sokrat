@@ -31,6 +31,11 @@ do
     echo -e "  $cmd\n"
     eval $cmd
 
+    cmd="MIX_ENV=prod mix ecto.migrate"
+    echo "Running migrations"
+    echo -e "  $cmd\n"
+    eval $cmd
+
     cd $cwd
 
     cmd=". $APP_DIR/script/run.sh"
