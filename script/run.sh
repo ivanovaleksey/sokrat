@@ -5,18 +5,7 @@ _start_sokratbot() {
   MIX_ENV=prod elixir --detached -e "File.write! 'tmp/pids/bot.pid', :os.getpid" -S mix run --no-halt
 }
 
-cwd=$(pwd)
-cd $APP_DIR
-pid_file=$APP_DIR/tmp/pids/bot.pid
-
-# === Load environment variables ===
-. .env
-export SLACK_BOT_TOKEN
-export SLACK_BOT_USERNAME
-export DB_DATABASE
-export DB_USERNAME
-export DB_PASSWORD
-# === Load environment variables ===
+pid_file=$(pwd)/tmp/pids/bot.pid
 
 if [ -f $pid_file ]; then
   echo "PID file is found"
@@ -31,4 +20,3 @@ else
 fi
 
 _start_sokratbot
-cd $cwd
