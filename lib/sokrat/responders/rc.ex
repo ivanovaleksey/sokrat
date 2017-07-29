@@ -9,16 +9,20 @@ defmodule Sokrat.Responders.RC do
   use Timex
 
   @usage """
-  hedwig: rc - Lists latest branches deployed on rc servers.
+  hedwig rc - Shows latest deployed branches.
   """
-  respond ~r/rc(\s(?<app_key>[a-z]*))?$/i, msg do
-    query =
-      case msg.matches["app_key"] do
-        "" -> Models.Application
-        key -> from a in Models.Application, where: a.key == ^key
-      end
+  respond ~r/rc$/i, msg do
+    Repo.all(Models.Application)
+    |> Enum.each(&send_revisions(&1, msg.room))
+  end
 
-    Repo.all(query)
+  @usage """
+  hedwig rc <app> - Shows latest deployed branches for particular <app>.
+                    Available options are: rails, php, js.
+  """
+  respond ~r/rc\s(?<app>[a-z]*)$/i, msg do
+    key = msg.matches["app"]
+    Repo.all(from a in Models.Application, where: a.key == ^key)
     |> Enum.each(&send_revisions(&1, msg.room))
   end
 
