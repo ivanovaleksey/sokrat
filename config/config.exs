@@ -10,7 +10,8 @@ config :sokrat, Sokrat.Robot,
   responders: [
     {Hedwig.Responders.Help, []},
     {Hedwig.Responders.Ping, []},
-    {Sokrat.Responders.RC, []}
+    {Sokrat.Responders.RC, []},
+    {Sokrat.Responders.Conflict, []}
   ]
 
 config :sokrat, ecto_repos: [Sokrat.Repo]

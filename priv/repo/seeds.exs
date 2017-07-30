@@ -24,7 +24,14 @@ defmodule Sokrat.Seeder do
       [application_id: php_app.id, server: "rc2", branch: "feature/30", revision: "ahs213c", deployed_at: NaiveDateTime.utc_now]
     ])
   end
+
+  def conflict_users do
+    Repo.insert_all(Models.ConflictUser, [
+      [bitbucket_username: "alexey.ivanov", slack_username: "alexey.ivanov"]
+    ])
+  end
 end
 
 Sokrat.Seeder.applications()
 Sokrat.Seeder.revisions()
+Sokrat.Seeder.conflict_users()
