@@ -21,13 +21,8 @@ do
     echo -e "  $cmd\n"
     eval $cmd
 
-    cmd="MIX_ENV=prod mix deps.compile"
-    echo "Compiling dependencies"
-    echo -e "  $cmd\n"
-    eval $cmd
-
     cmd="MIX_ENV=prod mix compile"
-    echo "Compiling application"
+    echo "Compiling"
     echo -e "  $cmd\n"
     eval $cmd
 
