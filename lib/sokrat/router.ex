@@ -62,12 +62,13 @@ defmodule Sokrat.Router do
     Repo.insert(changeset)
   end
 
-  defp notify_about_conflict(user, %{"title" => title, "url" => url}) do
+  defp notify_about_conflict(user, %{"title" => title, "url" => url, "toBranch" => branch}) do
+    text = "Your PR conflicts with #{branch}"
     attachments = [
       %{
         "color": "warning",
-        "pretext": "Your PR has conflict",
-        "fallback": "Your PR has conflict",
+        "pretext": text,
+        "fallback": text,
         "fields": [
           %{
             "title": "Title",
