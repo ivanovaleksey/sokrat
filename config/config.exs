@@ -4,19 +4,22 @@ use Mix.Config
 
 config :sokrat, Sokrat.Robot,
   adapter: Hedwig.Adapters.Slack,
-  name: "sokrat",
-  aka: "/",
+  name: "sokratbot",
+  aka: System.get_env("SLACK_BOT_USERNAME"),
   token: System.get_env("SLACK_BOT_TOKEN"),
   responders: [
     {Hedwig.Responders.Help, []},
     {Hedwig.Responders.Ping, []},
-    {Sokrat.Responders.RC, []}
+    {Sokrat.Responders.RC, []},
+    {Sokrat.Responders.Conflict, []}
   ]
 
 config :sokrat, ecto_repos: [Sokrat.Repo]
 config :sokrat, Sokrat.Repo,
   adapter: Ecto.Adapters.Postgres,
-  database: "sokrat"
+  database: System.get_env("DB_DATABASE"),
+  username: System.get_env("DB_USERNAME"),
+  password: System.get_env("DB_PASSWORD")
 
 config :plug,
   port: 8000

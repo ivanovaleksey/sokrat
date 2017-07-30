@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+cwd=$(pwd)
+export APP_DIR=$HOME/sokratbot
+
+while read oldrev newrev refname
+do
+  branch=$( echo $refname | cut -d/ -f3 )
+  if [ "master" == "$branch" ]; then
+    export GIT_WORK_TREE=$APP_DIR
+
+    cmd="git checkout -f"
+    echo "Cloning repo"
+    echo -e "  $cmd\n"
+    $cmd
+
+    cd $APP_DIR
+
+    cmd="MIX_ENV=prod mix deps.get --only prod"
+    echo "Installing dependencies"
+    echo -e "  $cmd\n"
+    eval $cmd
+
+    cmd="MIX_ENV=prod mix compile"
+    echo "Compiling"
+    echo -e "  $cmd\n"
+    eval $cmd
+
+    . .env
+    export SLACK_BOT_TOKEN
+    export SLACK_BOT_USERNAME
+    export DB_DATABASE
+    export DB_USERNAME
+    export DB_PASSWORD
+
+    cmd="MIX_ENV=prod mix ecto.migrate"
+    echo "Running migrations"
+    echo -e "  $cmd\n"
+    eval $cmd
+
+    cmd=". $APP_DIR/script/run.sh"
+    echo "Running application"
+    echo -e "  $cmd\n"
+    $cmd
+
+    cd $cwd
+  else
+    echo "Non-master branch was received. Do nothing."
+  fi
+done
