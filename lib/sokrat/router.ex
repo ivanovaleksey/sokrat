@@ -11,6 +11,10 @@ defmodule Sokrat.Router do
   plug :set_resp_content_type
   plug :dispatch
 
+  get "/ping" do
+    send_resp(conn, 200, Poison.encode!("pong"))
+  end
+
   get "/applications" do
     apps = Application |> select([a], map(a, [:id, :key, :name])) |> Repo.all
     send_resp(conn, 200, Poison.encode!(apps))
