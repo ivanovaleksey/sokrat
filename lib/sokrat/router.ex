@@ -1,5 +1,5 @@
 defmodule Sokrat.Router do
-  alias Sokrat.{Repo, Models.Application, Models.Revision}
+  alias Sokrat.{Slack, Repo, Models.Application, Models.ConflictUser, Models.Revision}
   import Ecto.Query, only: [select: 3]
   use Plug.Router
 
@@ -31,6 +31,22 @@ defmodule Sokrat.Router do
     respond(conn, status, changeset)
   end
 
+  post "/conflict" do
+    params = conn.body_params
+    username = Map.get(params, "author", "")
+
+    ConflictUser
+    |> Ecto.Query.where(bitbucket_username: ^username, enabled: true)
+    |> Repo.one
+    |> case do
+         nil -> send_resp(conn, 400, "")
+         user ->
+           # TODO: should be async
+           notify_about_conflict(user, params)
+           send_resp(conn, 200, "")
+       end
+  end
+
   match _ do
     send_resp(conn, 404, "")
   end
@@ -44,6 +60,31 @@ defmodule Sokrat.Router do
     revision = Ecto.build_assoc(application, :revisions, deployed_at: NaiveDateTime.utc_now)
     changeset = Revision.changeset(revision, params)
     Repo.insert(changeset)
+  end
+
+  defp notify_about_conflict(user, %{"title" => title, "url" => url}) do
+    attachments = [
+      %{
+        "color": "warning",
+        "pretext": "Your PR has conflict",
+        "fallback": "Your PR has conflict",
+        "fields": [
+          %{
+            "title": "Title",
+            "value": "#{title}"
+          },
+          %{
+            "title": "URL",
+            "value": "#{url}"
+          }
+        ]
+      }
+    ]
+
+    Slack.chat_message(
+      channel: "@#{user.slack_username}",
+      attachments: Poison.encode!(attachments)
+    )
   end
 
   defp respond(conn, :ok, _) do
