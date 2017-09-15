@@ -9,7 +9,7 @@ defmodule Sokrat.Responders.Conflict do
   """
   respond ~r/conf\sstatus$/i, msg do
     case find_user(msg) do
-      {:ok, user} -> answer({:ok, :status}, user, msg)
+      {:ok, user} -> answer({:ok, :status}, msg, user)
       {:error, :not_found} -> answer({:error, :not_found}, msg)
     end
   end
@@ -20,7 +20,7 @@ defmodule Sokrat.Responders.Conflict do
   respond ~r/conf\son$/i, msg do
     with {:ok, user} <- find_user(msg),
          {:ok, user} <- enable_user(user) do
-      answer({:ok, :status}, user, msg)
+      answer({:ok, :status}, msg, user)
     else
       {:error, reason} -> answer({:error, reason}, msg)
     end
@@ -32,9 +32,26 @@ defmodule Sokrat.Responders.Conflict do
   respond ~r/conf\soff$/i, msg do
     with {:ok, user} <- find_user(msg),
          {:ok, user} <- disable_user(user) do
-      answer({:ok, :status}, user, msg)
+      answer({:ok, :status}, msg, user)
     else
       {:error, reason} -> answer({:error, reason}, msg)
+    end
+  end
+
+  @usage """
+  hedwig conf me <bitbucket_username> - Add youself to conflicts notification list.
+  """
+  respond ~r/conf\sme\s(?<bitbucket_username>.+)$/i, msg do
+    user = %ConflictUser{
+      bitbucket_username: msg.matches["bitbucket_username"],
+      slack_username: msg.user.name
+    }
+
+    case enable_user(user) do
+      {:ok, user} ->
+        answer({:ok, :status}, msg, user)
+      {:error, %Ecto.Changeset{errors: errors}} ->
+        answer({:error, :invalid}, msg, errors)
     end
   end
 
@@ -52,7 +69,15 @@ defmodule Sokrat.Responders.Conflict do
   defp answer({:error, _}, msg) do
     send(msg, "Something went wrong. Please contact administrator.")
   end
-  defp answer({:ok, :status}, user, msg) do
+  defp answer({:error, :invalid}, msg, errors) do
+    response = for {key, {message, _}} <- errors do
+      "#{key} #{message}"
+    end
+    |> Enum.join("\n")
+
+    send(msg, response)
+  end
+  defp answer({:ok, :status}, msg, user) do
     if user.enabled do
       send(msg, "Conflict notifications are enabled")
     else
@@ -69,6 +94,6 @@ defmodule Sokrat.Responders.Conflict do
   end
 
   defp update_user(user, params) do
-    ConflictUser.changeset(user, params) |> Repo.update
+    ConflictUser.changeset(user, params) |> Repo.insert_or_update
   end
 end
