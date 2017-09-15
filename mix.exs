@@ -36,6 +36,7 @@ defmodule Sokrat.Mixfile do
      {:ecto, "~> 2.1"},
      {:httpoison, "~> 0.12.0"},
      {:timex, "~> 3.1"},
+     {:logger_file_backend, "~> 0.0.10"},
      {:credo, "~> 0.8", only: [:dev, :test], runtime: false}]
   end
 end
