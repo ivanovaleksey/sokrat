@@ -2,7 +2,7 @@ defmodule Sokrat.Models.ConflictUser do
   @moduledoc false
 
   use Ecto.Schema
-  import Ecto.Changeset, only: [cast: 3, validate_required: 2]
+  import Ecto.Changeset, only: [cast: 3, validate_required: 2, unique_constraint: 2]
 
   schema "conflict_users" do
     field :bitbucket_username, :string
@@ -15,6 +15,8 @@ defmodule Sokrat.Models.ConflictUser do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:enabled | @required_fields])
+    |> unique_constraint(:bitbucket_username)
+    |> unique_constraint(:slack_username)
     |> validate_required(@required_fields)
   end
 end

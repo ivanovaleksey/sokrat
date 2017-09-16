@@ -3,7 +3,7 @@ defmodule Sokrat.Mixfile do
 
   def project do
     [app: :sokrat,
-     version: "1.0.0",
+     version: "1.1.0",
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -33,9 +33,10 @@ defmodule Sokrat.Mixfile do
      {:cowboy, "~> 1.0.0"},
      {:plug, "~> 1.0"},
      {:postgrex, ">= 0.0.0"},
-     {:ecto, "~> 2.1"},
+     {:ecto, "~> 2.2"},
      {:httpoison, "~> 0.12.0"},
      {:timex, "~> 3.1"},
+     {:logger_file_backend, "~> 0.0.10"},
      {:credo, "~> 0.8", only: [:dev, :test], runtime: false}]
   end
 end
